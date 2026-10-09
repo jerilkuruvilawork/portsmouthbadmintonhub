@@ -110,14 +110,16 @@ export default function SessionList() {
     const map = new Map<(typeof DAY_ORDER)[number], EnrichedSession[]>();
     for (const day of DAY_ORDER) map.set(day, []);
     for (const session of filtered) {
-      for (const day of session.days) {
+      const days =
+        filters.day === "all" ? session.days : session.days.filter((day) => day === filters.day);
+      for (const day of days) {
         map.get(day)?.push(session);
       }
     }
     return DAY_ORDER.map((day) => ({ key: day, label: day, sessions: map.get(day) ?? [] })).filter(
       (g) => g.sessions.length > 0,
     );
-  }, [filtered]);
+  }, [filtered, filters.day]);
 
   const groupedByArea = useMemo(() => {
     const map = new Map<(typeof AREA_ORDER)[number], EnrichedSession[]>();
