@@ -1,5 +1,5 @@
 import SessionList from "./components/SessionList";
-import { SITE_NAME, SITE_TAGLINE } from "./config";
+import { PAYPAL_DONATE_URL, SITE_NAME, SITE_TAGLINE } from "./config";
 
 export default function App() {
   return (
@@ -26,6 +26,17 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
+        <div className="site-footer__coffee">
+          <p>If this list helped you find a game, you can buy me a coffee.</p>
+          <a
+            className="btn btn--accent"
+            href={PAYPAL_DONATE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy me a coffee with PayPal
+          </a>
+        </div>
         <p>
           {SITE_NAME} — community-maintained, not affiliated with any single club.
         </p>

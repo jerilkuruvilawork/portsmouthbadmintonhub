@@ -480,3 +480,18 @@ a:hover {
   font-size: 0.85rem;
   color: #5c6b5c;
 }
+
+.site-footer__coffee {
+  margin-bottom: 1.25rem;
+}
+
+.site-footer__coffee p {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: #1a2e1a;
+}
+
+.site-footer__coffee .btn {
+  display: inline-block;
+  text-decoration: none;
+}

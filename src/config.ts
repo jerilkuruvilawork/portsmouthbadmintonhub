@@ -12,3 +12,7 @@ export const SITE_TAGLINE =
  */
 export const MAINTAINER_EMAIL =
   import.meta.env.VITE_MAINTAINER_EMAIL ?? "jeril.kuruvila@gmail.com";
+
+/** Public PayPal Donate button. The manage page stays in the PayPal account. */
+export const PAYPAL_DONATE_URL =
+  "https://www.paypal.com/donate?hosted_button_id=CZFAJ7TBMSAZ4";
