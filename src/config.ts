@@ -17,7 +17,11 @@ export const MAINTAINER_EMAIL =
 export const PAYPAL_DONATE_URL =
   "https://www.paypal.com/donate?hosted_button_id=CZFAJ7TBMSAZ4";
 
-/** Google Analytics 4 — set `VITE_GA_MEASUREMENT_ID` (e.g. G-XXXXXXXX) at build time. */
+/** Google Tag Manager container (public). Override with `VITE_GTM_CONTAINER_ID` if needed. */
+export const GTM_CONTAINER_ID =
+  import.meta.env.VITE_GTM_CONTAINER_ID ?? "GTM-57TW26Z8";
+
+/** Optional direct GA4 tag — skip if GA4 runs inside GTM (avoids double counting). */
 export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? "";
 
 /** GoatCounter count URL (public). Override with `VITE_GOATCOUNTER_ENDPOINT` if needed. */

@@ -1,4 +1,4 @@
-import { GA_MEASUREMENT_ID, GOATCOUNTER_ENDPOINT } from "./config";
+import { GA_MEASUREMENT_ID, GOATCOUNTER_ENDPOINT, GTM_CONTAINER_ID } from "./config";
 
 declare global {
   interface Window {
@@ -56,6 +56,17 @@ function trackGooglePageView() {
   });
 }
 
+/** Tell GTM when filter links change the URL without a full reload. */
+function trackGtmVirtualPageView() {
+  if (!GTM_CONTAINER_ID?.trim()) return;
+  window.dataLayer = window.dataLayer ?? [];
+  window.dataLayer.push({
+    event: "page_view",
+    page_path: pagePath(),
+    page_title: document.title,
+  });
+}
+
 /** Call once when the app loads. Counts one page view (includes filter query string if present). */
 export function initAnalytics() {
   if (import.meta.env.DEV) return;
@@ -71,5 +82,6 @@ export function trackVirtualPageView() {
 
   const path = pagePath();
   window.goatcounter?.count({ path, title: document.title });
+  trackGtmVirtualPageView();
   trackGooglePageView();
 }

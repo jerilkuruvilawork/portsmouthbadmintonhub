@@ -29,11 +29,15 @@ Open [http://localhost:5173/portsmouthbadmintonhub/](http://localhost:5173/ports
 
 ## Visitor analytics
 
-GitHub Pages does not show visitor stats. The site supports **GoatCounter** and/or **Google Analytics 4**. Set build variables on GitHub (**Settings → Secrets and variables → Actions → Variables**), then push to `main` or re-run **Deploy Portsmouth Badminton Hub**.
+GitHub Pages does not show visitor stats. The site uses **Google Tag Manager** (`GTM-57TW26Z8` in `index.html`), **GoatCounter**, and optional direct **GA4** (`VITE_GA_MEASUREMENT_ID` — only if you are not already sending GA4 from inside GTM).
 
-Local dev never sends analytics.
+Local dev never sends GoatCounter/GA4 from `analytics.ts`; GTM still loads if you test a production build.
 
-### Google Analytics 4 (recommended if you already use Google)
+### Google Tag Manager
+
+Container **GTM-57TW26Z8** is in `index.html`. Configure GA4 and other tags in the [GTM console](https://tagmanager.google.com/). Filter URL changes push a `page_view` event to `dataLayer` for SPA tracking.
+
+### Google Analytics 4 (optional direct tag)
 
 1. Open [Google Analytics](https://analytics.google.com/) → **Admin** → create an **Account** and **Property** (if needed).
 2. Add a **Web** data stream for  
