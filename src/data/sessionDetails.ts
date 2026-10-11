@@ -310,6 +310,12 @@ const detailsById: Record<string, SessionDetails> = {
     kinds: ["social"],
     formats: ["doubles"],
   },
+  "pirates-sat": {
+    area: "Portsmouth",
+    playerLevels: ["intermediate", "advanced", "league"],
+    kinds: ["club"],
+    formats: ["doubles"],
+  },
   "southampton-rec-sat": {
     area: "Southampton",
     playerLevels: ["all-levels"],
@@ -325,12 +331,6 @@ const detailsById: Record<string, SessionDetails> = {
   "hawks-sun": {
     area: "Hamble",
     playerLevels: ["intermediate", "league"],
-    kinds: ["club"],
-    formats: ["doubles"],
-  },
-  "pompey-sun": {
-    area: "Horndean",
-    playerLevels: ["intermediate", "advanced"],
     kinds: ["club"],
     formats: ["doubles"],
   },
