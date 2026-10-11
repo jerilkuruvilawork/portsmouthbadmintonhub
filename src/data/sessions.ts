@@ -351,7 +351,8 @@ export const badmintonSessions: BadmintonSession[] = [
     venue: "Henry Cort Community College",
     address: "Fareham",
     level: "Club (waiting list reported)",
-    shuttle: "unknown",
+    shuttle: "plastic",
+    shuttleNote: "Hybrid Babolat shuttle.",
     notes: "May be full — contact club to join waiting list.",
   },
   {
@@ -450,6 +451,17 @@ export const badmintonSessions: BadmintonSession[] = [
     shuttle: "unknown",
     unconfirmed: true,
     notes: "From older council listing — verify before travelling.",
+  },
+  {
+    id: "jamie-russell-sat",
+    name: "Jamie Russell",
+    days: ["Saturday"],
+    time: "10:00 AM – 11:30 AM",
+    venue: "Swanmore College",
+    address: "New Road, Swanmore, Southampton SO32 2RB",
+    level: "Intermediate",
+    shuttle: "feather",
+    contact: "Jamie Russell",
   },
   {
     id: "pirates-sat",

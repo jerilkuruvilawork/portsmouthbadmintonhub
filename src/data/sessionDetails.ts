@@ -310,6 +310,12 @@ const detailsById: Record<string, SessionDetails> = {
     kinds: ["social"],
     formats: ["doubles"],
   },
+  "jamie-russell-sat": {
+    area: "Southampton",
+    playerLevels: ["intermediate"],
+    kinds: ["club"],
+    formats: ["doubles"],
+  },
   "pirates-sat": {
     area: "Portsmouth",
     playerLevels: ["intermediate", "advanced", "league"],
