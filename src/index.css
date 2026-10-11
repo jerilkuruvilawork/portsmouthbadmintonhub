@@ -324,6 +324,24 @@ a:hover {
   padding: 0.85rem 1.5rem;
 }
 
+.btn--coffee {
+  display: inline-block;
+  background: #0070ba;
+  color: #fff;
+  padding: 0.95rem 1.75rem;
+  font-size: 1.05rem;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 112, 186, 0.35);
+  transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn--coffee:hover {
+  background: #003087;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 48, 135, 0.4);
+}
+
 .btn--ghost {
   background: transparent;
   border: 1px solid var(--green-700);
@@ -481,17 +499,31 @@ a:hover {
   color: #5c6b5c;
 }
 
-.site-footer__coffee {
-  margin-bottom: 1.25rem;
+.coffee-cta {
+  max-width: 28rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.15rem 1.35rem;
+  text-align: center;
+  background: var(--amber-100);
+  border: 2px solid #f0c14b;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
 }
 
-.site-footer__coffee p {
-  margin: 0 0 0.75rem;
-  font-size: 1rem;
-  color: #1a2e1a;
+.coffee-cta--hero {
+  margin-top: 1.75rem;
 }
 
-.site-footer__coffee .btn {
-  display: inline-block;
-  text-decoration: none;
+.coffee-cta--footer {
+  margin-bottom: 1.5rem;
+  max-width: 32rem;
+}
+
+.coffee-cta__text {
+  margin: 0 0 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #5c4a1f;
+  line-height: 1.45;
 }

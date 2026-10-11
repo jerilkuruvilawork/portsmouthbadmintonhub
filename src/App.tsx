@@ -19,6 +19,20 @@ export default function App() {
           Wrong info? Use Suggest an edit on a session — the form opens with that listing filled in.
           To add a club, use <a href="#feedback">the form at the bottom of the page</a>.
         </p>
+
+        <div className="coffee-cta coffee-cta--hero">
+          <p className="coffee-cta__text">
+            If this list helped you find a game, you can buy me a coffee.
+          </p>
+          <a
+            className="btn btn--coffee"
+            href={PAYPAL_DONATE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Buy me a coffee with PayPal
+          </a>
+        </div>
       </header>
 
       <main>
@@ -26,10 +40,12 @@ export default function App() {
       </main>
 
       <footer className="site-footer">
-        <div className="site-footer__coffee">
-          <p>If this list helped you find a game, you can buy me a coffee.</p>
+        <div className="coffee-cta coffee-cta--footer">
+          <p className="coffee-cta__text">
+            If this list helped you find a game, you can buy me a coffee.
+          </p>
           <a
-            className="btn btn--accent"
+            className="btn btn--coffee"
             href={PAYPAL_DONATE_URL}
             target="_blank"
             rel="noopener noreferrer"
