@@ -25,38 +25,18 @@ function loadGoatCounter() {
   document.head.appendChild(script);
 }
 
-function loadGoogleAnalytics() {
-  const id = gaMeasurementId?.trim();
-  if (!id) return;
-
-  const loader = document.createElement("script");
-  loader.async = true;
-  loader.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
-  document.head.appendChild(loader);
-
-  window.dataLayer = window.dataLayer ?? [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
-  };
-  window.gtag("js", new Date());
-  window.gtag("config", id, {
-    anonymize_ip: true,
-    allow_google_signals: false,
-    send_page_view: false,
-  });
-}
-
+/** Filter URL changes — initial page view comes from gtag in index.html. */
 function trackGooglePageView() {
   const id = gaMeasurementId?.trim();
-  if (!id || !window.gtag) return;
+  if (!id || typeof window.gtag !== "function") return;
   window.gtag("event", "page_view", {
     send_to: id,
     page_path: pagePath(),
     page_title: document.title,
+    page_location: window.location.href,
   });
 }
 
-/** Tell GTM when filter links change the URL without a full reload. */
 function trackGtmVirtualPageView() {
   if (!GTM_CONTAINER_ID?.trim()) return;
   window.dataLayer = window.dataLayer ?? [];
@@ -67,16 +47,11 @@ function trackGtmVirtualPageView() {
   });
 }
 
-/** Call once when the app loads. Counts one page view (includes filter query string if present). */
 export function initAnalytics() {
   if (import.meta.env.DEV) return;
-
   loadGoatCounter();
-  loadGoogleAnalytics();
-  trackGooglePageView();
 }
 
-/** Optional: call when the URL changes without a full reload (shared filter links). */
 export function trackVirtualPageView() {
   if (import.meta.env.DEV) return;
 
