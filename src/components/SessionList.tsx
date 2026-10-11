@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DAY_ORDER, SHUTTLE_LABELS } from "../data/sessions";
 import {
   AREA_ORDER,
@@ -17,6 +17,9 @@ import {
   type GroupBy,
   type SessionFilters,
 } from "../utils/sessionFilters";
+import { isMapLink, mapsUrl } from "../utils/sessionLinks";
+import { compareByStartTime, firstDayIndex } from "../utils/sessionTime";
+import { buildSearch, readUrlState } from "../utils/urlFilters";
 
 function SessionCard({
   session,
@@ -25,6 +28,8 @@ function SessionCard({
   session: EnrichedSession;
   onSuggest: (session: EnrichedSession) => void;
 }) {
+  const mapLink = mapsUrl(session);
+  const infoLink = session.link && !isMapLink(session.link) ? session.link : undefined;
   return (
     <article className={`session-card${session.unconfirmed ? " session-card--warn" : ""}`}>
       <header className="session-card__header">
@@ -51,6 +56,11 @@ function SessionCard({
           </span>
         ))}
       </div>
+      {session.shuttleNote && (
+        <p className="session-card__shuttle-note">
+          <strong>Shuttle:</strong> {session.shuttleNote}
+        </p>
+      )}
       <p className="session-card__time">{session.time}</p>
       <p className="session-card__venue">
         {session.venue}
@@ -69,7 +79,6 @@ function SessionCard({
           </div>
         )}
       </dl>
-      {session.shuttleNote && <p className="session-card__shuttle-note">{session.shuttleNote}</p>}
       {session.excludesBeginners && (
         <p className="session-card__warn">Not aimed at beginners — check before you go.</p>
       )}
@@ -82,11 +91,28 @@ function SessionCard({
           {session.email && <a href={`mailto:${session.email}`}>{session.email}</a>}
         </p>
       )}
-      {session.link && (
-        <p>
-          <a href={session.link} target="_blank" rel="noopener noreferrer">
-            More info
-          </a>
+      {(session.bookingUrl || mapLink || infoLink) && (
+        <p className="session-card__links">
+          {session.bookingUrl && (
+            <a
+              className="session-card__book"
+              href={session.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Book
+            </a>
+          )}
+          {mapLink && (
+            <a href={mapLink} target="_blank" rel="noopener noreferrer">
+              Open in Maps
+            </a>
+          )}
+          {infoLink && (
+            <a href={infoLink} target="_blank" rel="noopener noreferrer">
+              More info
+            </a>
+          )}
         </p>
       )}
       {session.notes && <p className="session-card__notes">{session.notes}</p>}
@@ -99,8 +125,22 @@ function SessionCard({
 
 export default function SessionList() {
   const sessions = useMemo(() => getEnrichedSessions(), []);
-  const [filters, setFilters] = useState<SessionFilters>(DEFAULT_FILTERS);
-  const [groupBy, setGroupBy] = useState<GroupBy>("day");
+  const [initialUrlState] = useState(() => readUrlState(window.location.search));
+  const [filters, setFilters] = useState<SessionFilters>(initialUrlState.filters);
+  const [groupBy, setGroupBy] = useState<GroupBy>(initialUrlState.groupBy);
+  const [copiedSearch, setCopiedSearch] = useState<string | undefined>();
+  const currentSearch = buildSearch(filters, groupBy);
+  const linkCopied = copiedSearch === currentSearch;
+
+  useEffect(() => {
+    if (currentSearch !== window.location.search) {
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${currentSearch}${window.location.hash}`,
+      );
+    }
+  }, [currentSearch]);
   const [editing, setEditing] = useState<EnrichedSession | undefined>();
   const [formMode, setFormMode] = useState<"closed" | "add" | "edit">("closed");
 
@@ -116,9 +156,11 @@ export default function SessionList() {
         map.get(day)?.push(session);
       }
     }
-    return DAY_ORDER.map((day) => ({ key: day, label: day, sessions: map.get(day) ?? [] })).filter(
-      (g) => g.sessions.length > 0,
-    );
+    return DAY_ORDER.map((day) => ({
+      key: day,
+      label: day,
+      sessions: (map.get(day) ?? []).sort(compareByStartTime),
+    })).filter((g) => g.sessions.length > 0);
   }, [filtered, filters.day]);
 
   const groupedByArea = useMemo(() => {
@@ -130,7 +172,9 @@ export default function SessionList() {
     return AREA_ORDER.map((area) => ({
       key: area,
       label: area,
-      sessions: map.get(area) ?? [],
+      sessions: (map.get(area) ?? []).sort(
+        (a, b) => firstDayIndex(a.days) - firstDayIndex(b.days) || compareByStartTime(a, b),
+      ),
     })).filter((g) => g.sessions.length > 0);
   }, [filtered]);
 
@@ -200,6 +244,7 @@ export default function SessionList() {
               <option value="plastic">Plastic (confirmed)</option>
               <option value="no-strings">No Strings (usually plastic)</option>
               <option value="feather">Feather (confirmed)</option>
+              <option value="hybrid">Hybrid (confirmed)</option>
               <option value="not-stated">Type not listed — ask club</option>
             </select>
           </label>
@@ -275,13 +320,26 @@ export default function SessionList() {
             </select>
           </label>
           {activeFilterCount > 0 && (
-            <button
-              type="button"
-              className="btn btn--ghost btn--sm"
-              onClick={() => setFilters(DEFAULT_FILTERS)}
-            >
-              Clear filters ({activeFilterCount})
-            </button>
+            <>
+              <button
+                type="button"
+                className="btn btn--ghost btn--sm"
+                onClick={() => setFilters(DEFAULT_FILTERS)}
+              >
+                Clear filters ({activeFilterCount})
+              </button>
+              <button
+                type="button"
+                className="btn btn--ghost btn--sm"
+                onClick={() => {
+                  void navigator.clipboard
+                    .writeText(window.location.href)
+                    .then(() => setCopiedSearch(currentSearch));
+                }}
+              >
+                {linkCopied ? "Link copied" : "Copy link to these results"}
+              </button>
+            </>
           )}
         </div>
       </section>

@@ -10,6 +10,7 @@ export type DayOfWeek =
 export type ShuttleType =
   | "plastic"
   | "feather"
+  | "hybrid"
   | "unknown"
   | "no-strings";
 
@@ -28,6 +29,8 @@ export type BadmintonSession = {
   phone?: string;
   email?: string;
   link?: string;
+  /** Page where a player can book or pay for this session. */
+  bookingUrl?: string;
   notes?: string;
   unconfirmed?: boolean;
 };
@@ -45,6 +48,7 @@ export const DAY_ORDER: DayOfWeek[] = [
 export const SHUTTLE_LABELS: Record<ShuttleType, string> = {
   plastic: "Shuttles: plastic (confirmed)",
   feather: "Shuttles: feather (confirmed)",
+  hybrid: "Shuttles: hybrid (confirmed)",
   "no-strings": "Shuttles: No Strings (usually plastic)",
   unknown: "Shuttles: type not listed — ask the club",
 };
@@ -351,8 +355,8 @@ export const badmintonSessions: BadmintonSession[] = [
     venue: "Henry Cort Community College",
     address: "Fareham",
     level: "Club (waiting list reported)",
-    shuttle: "plastic",
-    shuttleNote: "Hybrid Babolat shuttle.",
+    shuttle: "hybrid",
+    shuttleNote: "Babolat hybrid.",
     notes: "May be full — contact club to join waiting list.",
   },
   {

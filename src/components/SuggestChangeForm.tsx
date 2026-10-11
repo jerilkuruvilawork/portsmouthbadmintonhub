@@ -47,7 +47,7 @@ type FormValues = {
   reporterEmail: string;
 };
 
-const SHUTTLE_OPTIONS: ShuttleType[] = ["plastic", "feather", "no-strings", "unknown"];
+const SHUTTLE_OPTIONS: ShuttleType[] = ["plastic", "feather", "hybrid", "no-strings", "unknown"];
 
 function emptyValues(): FormValues {
   return {

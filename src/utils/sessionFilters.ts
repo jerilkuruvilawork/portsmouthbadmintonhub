@@ -18,6 +18,7 @@ export type ShuttleFilter =
   | "all"
   | "plastic"
   | "feather"
+  | "hybrid"
   | "no-strings"
   | "not-stated";
 
@@ -74,6 +75,7 @@ export function shuttleMatches(filter: ShuttleFilter, shuttle: ShuttleType): boo
   if (filter === "all") return true;
   if (filter === "plastic") return shuttle === "plastic";
   if (filter === "feather") return shuttle === "feather";
+  if (filter === "hybrid") return shuttle === "hybrid";
   if (filter === "no-strings") return shuttle === "no-strings";
   if (filter === "not-stated") return shuttle === "unknown";
   return true;

@@ -241,6 +241,9 @@ a:hover {
 .shuttle-badge--feather {
   background: #fce4ec;
 }
+.shuttle-badge--hybrid {
+  background: #fff3e0;
+}
 .shuttle-badge--no-strings {
   background: #e3f2fd;
 }
@@ -279,9 +282,31 @@ a:hover {
 }
 
 .session-card__shuttle-note {
-  color: #2e7d32;
-  font-size: 0.85rem;
-  margin: 0 0 0.5rem;
+  color: #1b4332;
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0;
+}
+
+.session-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.session-card__book {
+  background: var(--green-700);
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.session-card__book:hover {
+  background: var(--green-900);
+  color: #fff;
 }
 
 .session-card__contact {

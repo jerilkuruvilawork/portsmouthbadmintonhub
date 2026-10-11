@@ -11,8 +11,8 @@ export default function App() {
         <h1>{SITE_NAME}</h1>
         <p className="hero__tagline">{SITE_TAGLINE}</p>
         <p className="hero__note">
-          Filter by area, player level, shuttle type (plastic / feather / No Strings), session
-          type, and format. If shuttle type is not listed for a session, contact the club before
+          Filter by area, player level, shuttle type (plastic / feather / hybrid / No Strings),
+          session type, and format. Filtered results have their own link you can share. If shuttle type is not listed for a session, contact the club before
           you travel — times and prices change too.
         </p>
         <p className="hero__contact">
@@ -39,7 +39,12 @@ export default function App() {
           .
         </p>
         <p>
-          {SITE_NAME} — community-maintained, not affiliated with any single club.
+          {SITE_NAME} — community-maintained, not affiliated with any single club. For the
+          official club list, see the{" "}
+          <a href="https://www.phba.org.uk/" target="_blank" rel="noopener noreferrer">
+            Portsmouth &amp; Hampshire Badminton Association
+          </a>
+          .
         </p>
       </footer>
     </div>
