@@ -231,6 +231,7 @@ export const badmintonSessions: BadmintonSession[] = [
     level: "Club session",
     shuttle: "plastic",
     shuttleNote: "Yonex Mavis 300.",
+    email: "pompeysmashers@gmail.com",
     link: "https://maps.app.goo.gl/Z6udzmFDf2eAWakZ8",
   },
   {
@@ -377,6 +378,7 @@ export const badmintonSessions: BadmintonSession[] = [
     level: "Club session",
     shuttle: "plastic",
     shuttleNote: "Yonex Mavis 300.",
+    email: "pompeysmashers@gmail.com",
     link: "https://maps.app.goo.gl/Z6udzmFDf2eAWakZ8",
   },
   {
@@ -431,10 +433,10 @@ export const badmintonSessions: BadmintonSession[] = [
     venue: "St Vincent Leisure Centre",
     address: "Mill Lane, Gosport PO12 4QA",
     level: "Social mixed doubles, 16+",
-    shuttle: "plastic",
+    shuttle: "unknown",
     contact: "Steve Black",
     phone: "01329 841761",
-    notes: "Morning session. Non-league, running since 1982.",
+    notes: "Non-league, running since 1982.",
   },
   {
     id: "notorious",
