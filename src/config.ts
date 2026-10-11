@@ -19,3 +19,8 @@ export const PAYPAL_DONATE_URL =
 
 /** Google Analytics 4 — set `VITE_GA_MEASUREMENT_ID` (e.g. G-XXXXXXXX) at build time. */
 export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? "";
+
+/** GoatCounter count URL (public). Override with `VITE_GOATCOUNTER_ENDPOINT` if needed. */
+export const GOATCOUNTER_ENDPOINT =
+  import.meta.env.VITE_GOATCOUNTER_ENDPOINT ??
+  "https://portsmouthhub.goatcounter.com/count";

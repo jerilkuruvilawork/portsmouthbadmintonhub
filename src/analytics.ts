@@ -1,10 +1,4 @@
-/**
- * Optional visitor analytics at build time (see `.env.example` and README):
- * - VITE_GOATCOUNTER_ENDPOINT — GoatCounter count URL
- * - VITE_GA_MEASUREMENT_ID — Google Analytics 4 measurement ID (G-XXXXXXXX)
- *
- * You can enable one or both. IDs are public; set them as GitHub Actions Variables for deploys.
- */
+import { GA_MEASUREMENT_ID, GOATCOUNTER_ENDPOINT } from "./config";
 
 declare global {
   interface Window {
@@ -14,8 +8,8 @@ declare global {
   }
 }
 
-const goatcounterEndpoint = import.meta.env.VITE_GOATCOUNTER_ENDPOINT as string | undefined;
-const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID as string | undefined;
+const goatcounterEndpoint = GOATCOUNTER_ENDPOINT;
+const gaMeasurementId = GA_MEASUREMENT_ID;
 
 function pagePath(): string {
   return `${window.location.pathname}${window.location.search}`;
