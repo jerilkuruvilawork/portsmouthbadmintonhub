@@ -29,7 +29,9 @@ Open [http://localhost:5173/portsmouthbadmintonhub/](http://localhost:5173/ports
 
 ## Visitor analytics
 
-GitHub Pages does not show visitor stats. The site uses **Google Tag Manager** (`GTM-57TW26Z8` in `index.html`), **GoatCounter**, and optional direct **GA4** (`VITE_GA_MEASUREMENT_ID` — only if you are not already sending GA4 from inside GTM).
+GitHub Pages does not show visitor stats. The site uses **Google Tag Manager** (`GTM-57TW26Z8` in `index.html`), **GoatCounter**, and **GA4** `G-3CM4KZQS4K` via `src/analytics.ts` (same as the gtag snippet, plus page views when filters change the URL).
+
+**Important:** In GTM, do **not** add a GA4 Configuration tag with `G-3CM4KZQS4K` unless you remove the built-in gtag loader — otherwise every visit is counted twice.
 
 Local dev never sends GoatCounter/GA4 from `analytics.ts`; GTM still loads if you test a production build.
 

@@ -21,8 +21,12 @@ export const PAYPAL_DONATE_URL =
 export const GTM_CONTAINER_ID =
   import.meta.env.VITE_GTM_CONTAINER_ID ?? "GTM-57TW26Z8";
 
-/** Optional direct GA4 tag — skip if GA4 runs inside GTM (avoids double counting). */
-export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? "";
+/**
+ * GA4 measurement ID (public). Same as the gtag snippet Google provides.
+ * Do not also fire this ID from a GA4 tag inside GTM — that double-counts visits.
+ */
+export const GA_MEASUREMENT_ID =
+  import.meta.env.VITE_GA_MEASUREMENT_ID ?? "G-3CM4KZQS4K";
 
 /** GoatCounter count URL (public). Override with `VITE_GOATCOUNTER_ENDPOINT` if needed. */
 export const GOATCOUNTER_ENDPOINT =
