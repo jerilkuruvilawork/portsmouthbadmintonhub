@@ -17,7 +17,9 @@ export default function App() {
         </p>
         <p className="hero__contact">
           Wrong info? Use Suggest an edit on a session — the form opens with that listing filled in.
-          To add a club, use <a href="#feedback">the form at the bottom of the page</a>.
+          To add a club or send any other message, use{" "}
+          <a href="#feedback">the forms at the bottom</a> or{" "}
+          <a href="#contact">contact / suggest</a>.
         </p>
       </header>
 
