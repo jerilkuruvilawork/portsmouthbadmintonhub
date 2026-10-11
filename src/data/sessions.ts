@@ -493,6 +493,17 @@ export const badmintonSessions: BadmintonSession[] = [
     link: "https://maps.app.goo.gl/Z6udzmFDf2eAWakZ8",
   },
   {
+    id: "anthony-sun",
+    name: "Anthony",
+    days: ["Sunday"],
+    time: "11:00 AM – 1:00 PM",
+    venue: "Charter Community Sports Centre",
+    address: "Greetham Street, Southsea PO5 4LF",
+    level: "Intermediates",
+    shuttle: "feather",
+    contact: "Anthony",
+  },
+  {
     id: "southampton-rec-sun",
     name: "University of Southampton — RecBad",
     days: ["Sunday"],

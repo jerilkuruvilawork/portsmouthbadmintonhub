@@ -334,6 +334,12 @@ const detailsById: Record<string, SessionDetails> = {
     kinds: ["club"],
     formats: ["doubles"],
   },
+  "anthony-sun": {
+    area: "Southsea",
+    playerLevels: ["intermediate"],
+    kinds: ["club"],
+    formats: ["doubles"],
+  },
   "southampton-rec-sun": {
     area: "Southampton",
     playerLevels: ["all-levels"],
