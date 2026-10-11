@@ -27,16 +27,29 @@ Open [http://localhost:5173/portsmouthbadmintonhub/](http://localhost:5173/ports
 - `src/data/sessions.ts` — times, venues, club contacts
 - `src/data/sessionDetails.ts` — area, levels, types, formats
 
-## Visitor count
+## Visitor analytics
 
-GitHub Pages does not show how many people visit the site. To get a count:
+GitHub Pages does not show visitor stats. The site supports **GoatCounter** and/or **Google Analytics 4**. Set build variables on GitHub (**Settings → Secrets and variables → Actions → Variables**), then push to `main` or re-run **Deploy Portsmouth Badminton Hub**.
 
-1. Create a free site at [GoatCounter](https://www.goatcounter.com) (recommended — no cookies, simple dashboard).
-2. Copy your **count URL** (looks like `https://something.goatcounter.com/count`).
-3. In GitHub: **Settings → Secrets and variables → Actions → Variables** → add  
-   `VITE_GOATCOUNTER_ENDPOINT` = that URL.
-4. Push to `main` (or re-run the deploy workflow). The next build will include the tracker.
+Local dev never sends analytics.
 
-Optional: use `VITE_GA_MEASUREMENT_ID` (GA4 `G-…` ID) instead of or as well as GoatCounter.
+### Google Analytics 4 (recommended if you already use Google)
 
-Local dev does not send analytics (`initAnalytics` skips when `import.meta.env.DEV`).
+1. Open [Google Analytics](https://analytics.google.com/) → **Admin** → create an **Account** and **Property** (if needed).
+2. Add a **Web** data stream for  
+   `https://jerilkuruvilawork.github.io/portsmouthbadmintonhub/`  
+   (later you can add your custom domain as another stream or change the URL).
+3. Copy the **Measurement ID** (starts with `G-`, e.g. `G-ABC123XYZ`).
+4. Add GitHub variable **`VITE_GA_MEASUREMENT_ID`** = that ID.
+5. Redeploy. In GA4, open **Reports → Realtime** to confirm visits (can take a few minutes).
+
+Filter changes update the URL (`?day=Saturday&…`); those count as separate page paths in both GA and GoatCounter.
+
+### GoatCounter (optional, privacy-friendly)
+
+1. Create a free site at [GoatCounter](https://www.goatcounter.com).
+2. Copy the **count URL** (e.g. `https://yoursite.goatcounter.com/count`).
+3. Add GitHub variable **`VITE_GOATCOUNTER_ENDPOINT`** = that URL.
+4. Redeploy.
+
+You can set **both** variables to use GA and GoatCounter together.

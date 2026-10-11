@@ -1,7 +1,9 @@
 /**
- * Optional visitor analytics. Set one of these at build time (see `.env.example`):
- * - VITE_GOATCOUNTER_ENDPOINT — free at https://www.goatcounter.com (recommended)
- * - VITE_GA_MEASUREMENT_ID — Google Analytics 4 (G-XXXXXXXX)
+ * Optional visitor analytics at build time (see `.env.example` and README):
+ * - VITE_GOATCOUNTER_ENDPOINT — GoatCounter count URL
+ * - VITE_GA_MEASUREMENT_ID — Google Analytics 4 measurement ID (G-XXXXXXXX)
+ *
+ * You can enable one or both. IDs are public; set them as GitHub Actions Variables for deploys.
  */
 
 declare global {
@@ -43,7 +45,21 @@ function loadGoogleAnalytics() {
     window.dataLayer?.push(args);
   };
   window.gtag("js", new Date());
-  window.gtag("config", id, { anonymize_ip: true });
+  window.gtag("config", id, {
+    anonymize_ip: true,
+    allow_google_signals: false,
+    send_page_view: false,
+  });
+}
+
+function trackGooglePageView() {
+  const id = gaMeasurementId?.trim();
+  if (!id || !window.gtag) return;
+  window.gtag("event", "page_view", {
+    send_to: id,
+    page_path: pagePath(),
+    page_title: document.title,
+  });
 }
 
 /** Call once when the app loads. Counts one page view (includes filter query string if present). */
@@ -52,12 +68,7 @@ export function initAnalytics() {
 
   loadGoatCounter();
   loadGoogleAnalytics();
-
-  // GoatCounter’s script auto-counts the first view; GA needs an explicit config only.
-  // If only GoatCounter is used, no extra call is required.
-  if (gaMeasurementId?.trim() && !goatcounterEndpoint?.trim()) {
-    window.gtag?.("event", "page_view", { page_path: pagePath() });
-  }
+  trackGooglePageView();
 }
 
 /** Optional: call when the URL changes without a full reload (shared filter links). */
@@ -66,5 +77,5 @@ export function trackVirtualPageView() {
 
   const path = pagePath();
   window.goatcounter?.count({ path, title: document.title });
-  window.gtag?.("event", "page_view", { page_path: path });
+  trackGooglePageView();
 }

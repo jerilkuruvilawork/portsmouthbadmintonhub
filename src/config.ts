@@ -16,3 +16,6 @@ export const MAINTAINER_EMAIL =
 /** Public PayPal Donate button. The manage page stays in the PayPal account. */
 export const PAYPAL_DONATE_URL =
   "https://www.paypal.com/donate?hosted_button_id=CZFAJ7TBMSAZ4";
+
+/** Google Analytics 4 — set `VITE_GA_MEASUREMENT_ID` (e.g. G-XXXXXXXX) at build time. */
+export const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID ?? "";
