@@ -175,9 +175,10 @@ const detailsById: Record<string, SessionDetails> = {
   },
   "gosport-starter": {
     area: "Gosport",
-    playerLevels: ["beginner", "improver"],
-    kinds: ["starter", "social"],
-    formats: ["doubles"],
+    playerLevels: ["league"],
+    kinds: ["club"],
+    formats: ["doubles", "mixed"],
+    excludesBeginners: true,
   },
   lockswood: {
     area: "Locks Heath",
