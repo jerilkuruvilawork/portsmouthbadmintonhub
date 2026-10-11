@@ -166,6 +166,13 @@ const detailsById: Record<string, SessionDetails> = {
     formats: ["doubles"],
     excludesBeginners: true,
   },
+  "cowplain-tue": {
+    area: "Waterlooville",
+    playerLevels: ["intermediate", "advanced", "league"],
+    kinds: ["club"],
+    formats: ["doubles"],
+    excludesBeginners: true,
+  },
   "gosport-starter": {
     area: "Gosport",
     playerLevels: ["beginner", "improver"],
@@ -189,6 +196,13 @@ const detailsById: Record<string, SessionDetails> = {
     playerLevels: ["improver", "intermediate"],
     kinds: ["social", "pay-and-play"],
     formats: ["doubles"],
+  },
+  "pirates-tue": {
+    area: "Southsea",
+    playerLevels: ["intermediate", "advanced", "league"],
+    kinds: ["club", "pay-and-play"],
+    formats: ["doubles", "mixed"],
+    excludesBeginners: true,
   },
   "pompey-tue": {
     area: "Horndean",
