@@ -142,7 +142,7 @@ const detailsById: Record<string, SessionDetails> = {
     formats: ["doubles", "mixed"],
   },
   "smashing-mondays": {
-    area: "Portsmouth",
+    area: "Southsea",
     playerLevels: ["improver", "intermediate"],
     kinds: ["club", "social"],
     formats: ["doubles"],
@@ -227,7 +227,7 @@ const detailsById: Record<string, SessionDetails> = {
     formats: ["doubles"],
   },
   bognor: {
-    area: "Bognor",
+    area: "Chichester",
     playerLevels: ["intermediate", "league"],
     kinds: ["club"],
     formats: ["doubles"],

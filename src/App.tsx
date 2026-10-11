@@ -41,8 +41,13 @@ export default function App() {
         <p>
           {SITE_NAME} — community-maintained, not affiliated with any single club. For the
           official club list, see the{" "}
-          <a href="https://www.phba.org.uk/" target="_blank" rel="noopener noreferrer">
-            Portsmouth &amp; Hampshire Badminton Association
+          <a href="http://www.phba.org.uk/Clubs/" target="_blank" rel="noopener noreferrer">
+            Portsmouth &amp; Hampshire Badminton Association club directory
+          </a>
+          {" "}
+          and{" "}
+          <a href="http://www.phba.org.uk/No_Strings/" target="_blank" rel="noopener noreferrer">
+            No Strings sessions
           </a>
           .
         </p>
