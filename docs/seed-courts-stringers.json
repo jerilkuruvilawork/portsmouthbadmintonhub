@@ -1,0 +1,76 @@
+{
+  "lastUpdated": "2026-10-12",
+  "notes": "Mirror of src/data/courts.ts and stringers.ts for research and edits. Deploy uses the TypeScript files.",
+  "courts": [
+    {
+      "id": "court-mountbatten",
+      "area": "Portsmouth",
+      "bookingUrl": "https://bhliveactive.org.uk/find-an-activity/sports-timetable",
+      "relatedSessionIds": ["toffs"]
+    },
+    {
+      "id": "court-wimbledon-park",
+      "area": "Southsea",
+      "courtsCount": 5
+    },
+    {
+      "id": "court-gosport-leisure",
+      "area": "Gosport",
+      "relatedSessionIds": ["gosport-no-strings"]
+    },
+    {
+      "id": "court-horizon-havant",
+      "area": "Havant",
+      "bookingUrl": "https://horizonlc.com/havant-badminton/"
+    },
+    {
+      "id": "court-westgate",
+      "area": "Chichester",
+      "bookingUrl": "https://westgatebadminton.simplybook.it/v2/"
+    },
+    {
+      "id": "court-hamble-ea",
+      "area": "Hamble",
+      "relatedSessionIds": ["hawks-sun"]
+    },
+    {
+      "id": "court-ravelin-uop",
+      "area": "Portsmouth",
+      "relatedSessionIds": ["uop-play-sun"]
+    },
+    {
+      "id": "court-alns",
+      "area": "Portsmouth",
+      "relatedSessionIds": ["alns-rec"]
+    },
+    {
+      "id": "court-portsmouth-high",
+      "area": "Southsea"
+    },
+    {
+      "id": "court-mayfield",
+      "area": "Portsmouth"
+    },
+    {
+      "id": "court-portsmouth-academy",
+      "area": "Portsmouth"
+    },
+    {
+      "id": "court-swanmore",
+      "area": "Southampton"
+    },
+    {
+      "id": "court-st-vincent",
+      "area": "Gosport",
+      "bookingType": "enquiry"
+    }
+  ],
+  "stringers": [
+    { "id": "stringer-jons", "area": "Fareham", "serviceType": "mobile" },
+    { "id": "stringer-racquet-depot", "area": "Havant", "serviceType": "shop" },
+    { "id": "stringer-southampton-stringing", "area": "Southampton", "serviceType": "mobile" },
+    { "id": "stringer-bassett", "area": "Southampton", "serviceType": "shop" },
+    { "id": "stringer-racket-shack", "area": "Southampton", "serviceType": "shop" },
+    { "id": "stringer-yc-postal", "area": "Portsmouth", "serviceType": "postal" }
+  ]
+}

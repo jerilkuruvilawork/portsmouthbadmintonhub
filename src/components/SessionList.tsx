@@ -9,8 +9,7 @@ import {
   type EnrichedSession,
   type SessionKind,
 } from "../data/sessionDetails";
-import ContactForm from "./ContactForm";
-import SuggestChangeForm from "./SuggestChangeForm";
+import { useFeedback } from "./FeedbackSection";
 import {
   countActiveFilters,
   DEFAULT_FILTERS,
@@ -21,6 +20,7 @@ import {
 import { isMapLink, mapsUrl } from "../utils/sessionLinks";
 import { compareByStartTime, firstDayIndex } from "../utils/sessionTime";
 import { trackVirtualPageView } from "../analytics";
+import { readHubView, mergeHubViewIntoSearch } from "../utils/hubView";
 import { buildSearch, readUrlState } from "../utils/urlFilters";
 
 function SessionCard({
@@ -136,23 +136,16 @@ export default function SessionList() {
 
   useEffect(() => {
     if (currentSearch !== window.location.search) {
+      const search = mergeHubViewIntoSearch(currentSearch, readHubView(window.location.search));
       window.history.replaceState(
         null,
         "",
-        `${window.location.pathname}${currentSearch}${window.location.hash}`,
+        `${window.location.pathname}${search}${window.location.hash}`,
       );
       trackVirtualPageView();
     }
   }, [currentSearch]);
-  const [editing, setEditing] = useState<EnrichedSession | undefined>();
-  const [formMode, setFormMode] = useState<"closed" | "add" | "edit" | "contact">("closed");
-
-  useEffect(() => {
-    if (window.location.hash === "#contact") {
-      setFormMode("contact");
-      setEditing(undefined);
-    }
-  }, []);
+  const { openForm } = useFeedback();
 
   const filtered = useMemo(() => filterSessions(sessions, filters), [sessions, filters]);
 
@@ -193,17 +186,6 @@ export default function SessionList() {
 
   function patchFilters(partial: Partial<SessionFilters>) {
     setFilters((prev) => ({ ...prev, ...partial }));
-  }
-
-  function openForm(mode: "add" | "edit" | "contact", session?: EnrichedSession) {
-    setFormMode(mode);
-    setEditing(session);
-    if (mode === "contact") {
-      window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}#contact`);
-    }
-    requestAnimationFrame(() => {
-      document.getElementById("feedback")?.scrollIntoView({ behavior: "smooth" });
-    });
   }
 
   return (
@@ -388,49 +370,6 @@ export default function SessionList() {
           </section>
         ))
       )}
-
-      <section id="feedback" className="feedback">
-        {formMode === "closed" ? (
-          <div className="feedback__prompt">
-            <div className="feedback__actions">
-              <button type="button" className="btn btn--accent btn--lg" onClick={() => openForm("add")}>
-                Add a club
-              </button>
-              <button type="button" className="btn btn--ghost btn--lg" onClick={() => openForm("contact")}>
-                Contact / suggest
-              </button>
-            </div>
-            <p>
-              To correct a listing, use Suggest an edit on that session. The form opens with its
-              details filled in.
-            </p>
-          </div>
-        ) : formMode === "contact" ? (
-          <ContactForm
-            onCancel={() => {
-              setFormMode("closed");
-              setEditing(undefined);
-              if (window.location.hash === "#contact") {
-                window.history.replaceState(
-                  null,
-                  "",
-                  `${window.location.pathname}${window.location.search}`,
-                );
-              }
-            }}
-          />
-        ) : (
-          <SuggestChangeForm
-            key={formMode === "edit" ? editing?.id : "new"}
-            mode={formMode}
-            session={formMode === "edit" ? editing : undefined}
-            onCancel={() => {
-              setFormMode("closed");
-              setEditing(undefined);
-            }}
-          />
-        )}
-      </section>
     </>
   );
 }

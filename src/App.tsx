@@ -1,7 +1,44 @@
+import { useEffect, useState } from "react";
+import CourtList from "./components/CourtList";
+import { FeedbackProvider } from "./components/FeedbackSection";
+import HubTabs from "./components/HubTabs";
 import SessionList from "./components/SessionList";
+import StringerList from "./components/StringerList";
+import { trackVirtualPageView } from "./analytics";
 import { PAYPAL_DONATE_URL, SITE_NAME, SITE_TAGLINE } from "./config";
+import { buildDirectorySearch, readDirectoryFilters, readHubView, type HubView } from "./utils/hubView";
 
 export default function App() {
+  const [view, setView] = useState<HubView>(() => readHubView(window.location.search));
+
+  useEffect(() => {
+    const syncView = () => setView(readHubView(window.location.search));
+    window.addEventListener("popstate", syncView);
+    return () => window.removeEventListener("popstate", syncView);
+  }, []);
+
+  function changeView(next: HubView) {
+    setView(next);
+    if (next === "sessions") {
+      const params = new URLSearchParams(window.location.search);
+      params.delete("view");
+      const built = params.toString();
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${built ? `?${built}` : ""}${window.location.hash}`,
+      );
+    } else {
+      const { area, query } = readDirectoryFilters(window.location.search);
+      window.history.replaceState(
+        null,
+        "",
+        `${window.location.pathname}${buildDirectorySearch(next, area, query)}${window.location.hash}`,
+      );
+    }
+    trackVirtualPageView();
+  }
+
   return (
     <div className="layout">
       <header className="hero">
@@ -11,21 +48,26 @@ export default function App() {
         <h1>{SITE_NAME}</h1>
         <p className="hero__tagline">{SITE_TAGLINE}</p>
         <p className="hero__note">
-          Filter by area, player level, shuttle type (plastic / feather / hybrid / No Strings),
-          session type, and format. Filtered results have their own link you can share. If shuttle type is not listed for a session, contact the club before
-          you travel — times and prices change too.
+          Use the tabs for <strong>sessions</strong>, <strong>bookable courts</strong>, or{" "}
+          <strong>stringers</strong>. Filter by area and share the URL. Shuttle type, prices, and
+          court slots change — confirm with the venue or stringer before you travel.
         </p>
         <p className="hero__contact">
-          Wrong info? Use Suggest an edit on a session — the form opens with that listing filled in.
-          To add a club or send any other message, use{" "}
+          Wrong info? On sessions, use Suggest an edit on a card. To add a club, court, or stringer,
+          or send any other message, use{" "}
           <a href="#feedback">the forms at the bottom</a> or{" "}
           <a href="#contact">contact / suggest</a>.
         </p>
       </header>
 
-      <main>
-        <SessionList />
-      </main>
+      <FeedbackProvider>
+        <main>
+          <HubTabs view={view} onChange={changeView} />
+          {view === "sessions" && <SessionList />}
+          {view === "courts" && <CourtList />}
+          {view === "stringers" && <StringerList />}
+        </main>
+      </FeedbackProvider>
 
       <footer className="site-footer">
         <p className="site-footer__support">

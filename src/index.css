@@ -178,6 +178,42 @@ a:hover {
   font-weight: 600;
 }
 
+.hub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin: 0 0 1.25rem;
+}
+
+.hub-tabs__btn {
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  border: 2px solid #c5d4c5;
+  background: var(--cream);
+  color: var(--green-700);
+  cursor: pointer;
+}
+
+.hub-tabs__btn:hover {
+  border-color: var(--green-500);
+}
+
+.hub-tabs__btn--active {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
+
+.session-card__meta-note {
+  font-size: 0.75rem;
+  color: #7a8a7a;
+  margin: 0.75rem 0 0;
+}
+
 .results-count {
   text-align: center;
   color: #5c6b5c;
