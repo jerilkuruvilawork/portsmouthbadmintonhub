@@ -63,7 +63,19 @@
       "id": "court-st-vincent",
       "area": "Gosport",
       "bookingType": "enquiry"
-    }
+    },
+    { "id": "court-charter", "area": "Southsea" },
+    { "id": "court-fareham-leisure", "area": "Fareham", "courtsCount": 8 },
+    { "id": "court-horizon-waterlooville", "area": "Waterlooville" },
+    { "id": "court-bourne", "area": "Southbourne", "courtsCount": 4 },
+    { "id": "court-arun", "area": "Bognor" },
+    { "id": "court-taro", "area": "Petersfield" },
+    { "id": "court-eastleigh-places", "area": "Eastleigh", "courtsCount": 15 },
+    { "id": "court-warblington", "area": "Havant", "bookingType": "schoolhire" },
+    { "id": "court-cowplain-school", "area": "Waterlooville", "bookingType": "schoolhire" },
+    { "id": "court-henry-cort", "area": "Fareham", "bookingType": "schoolhire" },
+    { "id": "court-portchester-school", "area": "Portchester", "bookingType": "schoolhire" },
+    { "id": "court-west-hill-park", "area": "Fareham", "bookingType": "schoolhire" }
   ],
   "stringers": [
     { "id": "stringer-jons", "area": "Fareham", "serviceType": "mobile" },
@@ -71,6 +83,9 @@
     { "id": "stringer-southampton-stringing", "area": "Southampton", "serviceType": "mobile" },
     { "id": "stringer-bassett", "area": "Southampton", "serviceType": "shop" },
     { "id": "stringer-racket-shack", "area": "Southampton", "serviceType": "shop" },
-    { "id": "stringer-yc-postal", "area": "Portsmouth", "serviceType": "postal" }
+    { "id": "stringer-yc-postal", "area": "Portsmouth", "serviceType": "postal" },
+    { "id": "stringer-racket-shack-gosport", "area": "Gosport", "serviceType": "mobile" },
+    { "id": "stringer-racquets-avenue", "area": "Havant", "serviceType": "shop" },
+    { "id": "stringer-decathlon-portsmouth", "area": "Portsmouth", "serviceType": "shop" }
   ]
 }

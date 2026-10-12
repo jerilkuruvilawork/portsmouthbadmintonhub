@@ -11,12 +11,19 @@ import { buildDirectorySearch, readDirectoryFilters } from "../utils/hubView";
 import { filterCourts, type DirectoryFilters } from "../utils/directoryFilters";
 import { mapsUrl } from "../utils/sessionLinks";
 import { trackVirtualPageView } from "../analytics";
+import { useFeedback } from "./FeedbackSection";
 
 function sessionName(id: string): string {
   return badmintonSessions.find((s) => s.id === id)?.name ?? id;
 }
 
-function CourtCard({ court }: { court: BookableCourt }) {
+function CourtCard({
+  court,
+  onSuggest,
+}: {
+  court: BookableCourt;
+  onSuggest: (court: BookableCourt) => void;
+}) {
   const mapLink = mapsUrl({ venue: court.venue, address: court.address, link: undefined });
   const bookLink = court.bookingUrl ?? court.link;
 
@@ -86,11 +93,15 @@ function CourtCard({ court }: { court: BookableCourt }) {
         </p>
       )}
       <p className="session-card__meta-note">Verified {court.lastVerified}</p>
+      <button type="button" className="btn btn--ghost btn--sm" onClick={() => onSuggest(court)}>
+        Suggest an edit
+      </button>
     </article>
   );
 }
 
 export default function CourtList() {
+  const { openCourtForm } = useFeedback();
   const [filters, setFilters] = useState<DirectoryFilters>(() => {
     const { area, query } = readDirectoryFilters(window.location.search);
     const areaOk = AREA_ORDER.includes(area as (typeof AREA_ORDER)[number])
@@ -163,8 +174,18 @@ export default function CourtList() {
       </section>
 
       <p className="results-count">
-        {filtered.length} venue{filtered.length === 1 ? "" : "s"} · Prices and slots change — confirm
-        on the provider site before you travel.
+        {filtered.length} venue{filtered.length === 1 ? "" : "s"} ·{" "}
+        <a
+          href="#feedback"
+          onClick={(event) => {
+            event.preventDefault();
+            openCourtForm("add");
+          }}
+        >
+          Add a court
+        </a>
+        {" · "}
+        Prices and slots change — confirm on the provider site before you travel.
       </p>
 
       {grouped.length === 0 ? (
@@ -175,7 +196,11 @@ export default function CourtList() {
             <h2>{label}</h2>
             <div className="session-grid">
               {courts.map((court) => (
-                <CourtCard key={court.id} court={court} />
+                <CourtCard
+                  key={court.id}
+                  court={court}
+                  onSuggest={(c) => openCourtForm("edit", c)}
+                />
               ))}
             </div>
           </section>

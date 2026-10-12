@@ -53,8 +53,8 @@ export default function App() {
           court slots change — confirm with the venue or stringer before you travel.
         </p>
         <p className="hero__contact">
-          Wrong info? On sessions, use Suggest an edit on a card. To add a club, court, or stringer,
-          or send any other message, use{" "}
+          Wrong info? Use Suggest an edit on the card. To add a club, court, or stringer, use the
+          buttons at the bottom or{" "}
           <a href="#feedback">the forms at the bottom</a> or{" "}
           <a href="#contact">contact / suggest</a>.
         </p>

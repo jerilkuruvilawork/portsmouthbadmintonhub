@@ -18,6 +18,7 @@ export type Area =
   | "Petersfield"
   | "Southampton"
   | "Chandler's Ford"
+  | "Eastleigh"
   | "Clanfield"
   | "Southbourne"
   | "Bracklesham";
@@ -68,6 +69,7 @@ export const AREA_ORDER: Area[] = [
   "Petersfield",
   "Southampton",
   "Chandler's Ford",
+  "Eastleigh",
   "Clanfield",
   "Southbourne",
   "Bracklesham",

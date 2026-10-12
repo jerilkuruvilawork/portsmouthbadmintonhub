@@ -13,19 +13,11 @@ export type CorrectionPayload = {
   fields: CorrectionField[];
 };
 
-export async function submitCorrection(
-  payload: CorrectionPayload,
+async function sendMaintainerEmail(
+  subject: string,
+  body: string,
+  reporterEmail?: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const action = payload.mode === "edit" ? "Edit session" : "Add session";
-  const subject = `Portsmouth Badminton Hub: ${action} — ${payload.clubName || "unnamed"}`;
-
-  const body = [
-    action,
-    payload.sessionId ? `Existing id: ${payload.sessionId}` : "New session",
-    "",
-    ...payload.fields.map((field) => `${field.label}: ${field.value.trim() || "—"}`),
-  ].join("\n");
-
   try {
     const response = await fetch(
       `https://formsubmit.co/ajax/${encodeURIComponent(MAINTAINER_EMAIL)}`,
@@ -38,8 +30,8 @@ export async function submitCorrection(
         body: JSON.stringify({
           _subject: subject,
           message: body,
-          email: payload.reporterEmail?.trim() || "anonymous@example.com",
-          _replyto: payload.reporterEmail?.trim() || undefined,
+          email: reporterEmail?.trim() || "anonymous@example.com",
+          _replyto: reporterEmail?.trim() || undefined,
           _captcha: "false",
         }),
       },
@@ -58,4 +50,48 @@ export async function submitCorrection(
   } catch {
     return { ok: false, error: "Network error. Check your connection and try again." };
   }
+}
+
+export async function submitCorrection(
+  payload: CorrectionPayload,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const action = payload.mode === "edit" ? "Edit session" : "Add session";
+  const subject = `Portsmouth Badminton Hub: ${action} — ${payload.clubName || "unnamed"}`;
+
+  const body = [
+    action,
+    payload.sessionId ? `Existing id: ${payload.sessionId}` : "New session",
+    "",
+    ...payload.fields.map((field) => `${field.label}: ${field.value.trim() || "—"}`),
+  ].join("\n");
+
+  return sendMaintainerEmail(subject, body, payload.reporterEmail);
+}
+
+export type DirectoryEntity = "court" | "stringer";
+
+export type DirectoryCorrectionPayload = {
+  mode: "add" | "edit";
+  entity: DirectoryEntity;
+  listingName: string;
+  listingId?: string;
+  reporterEmail?: string;
+  fields: CorrectionField[];
+};
+
+export async function submitDirectoryCorrection(
+  payload: DirectoryCorrectionPayload,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const noun = payload.entity === "court" ? "court" : "stringer";
+  const action = payload.mode === "edit" ? `Edit ${noun}` : `Add ${noun}`;
+  const subject = `Portsmouth Badminton Hub: ${action} — ${payload.listingName || "unnamed"}`;
+
+  const body = [
+    action,
+    payload.listingId ? `Existing id: ${payload.listingId}` : `New ${noun}`,
+    "",
+    ...payload.fields.map((field) => `${field.label}: ${field.value.trim() || "—"}`),
+  ].join("\n");
+
+  return sendMaintainerEmail(subject, body, payload.reporterEmail);
 }

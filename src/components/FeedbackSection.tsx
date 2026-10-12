@@ -1,12 +1,26 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import type { BookableCourt } from "../data/courts";
 import type { EnrichedSession } from "../data/sessionDetails";
+import type { Stringer } from "../data/stringers";
 import ContactForm from "./ContactForm";
 import SuggestChangeForm from "./SuggestChangeForm";
+import SuggestCourtForm from "./SuggestCourtForm";
+import SuggestStringerForm from "./SuggestStringerForm";
 
-type FormMode = "closed" | "add" | "edit" | "contact";
+type ActiveForm =
+  | { kind: "closed" }
+  | { kind: "contact" }
+  | { kind: "session"; mode: "add" | "edit"; session?: EnrichedSession }
+  | { kind: "court"; mode: "add" | "edit"; court?: BookableCourt }
+  | { kind: "stringer"; mode: "add" | "edit"; stringer?: Stringer };
 
 type FeedbackContextValue = {
+  /** @deprecated use openSessionForm */
   openForm: (mode: "add" | "edit" | "contact", session?: EnrichedSession) => void;
+  openSessionForm: (mode: "add" | "edit", session?: EnrichedSession) => void;
+  openCourtForm: (mode: "add" | "edit", court?: BookableCourt) => void;
+  openStringerForm: (mode: "add" | "edit", stringer?: Stringer) => void;
+  openContact: () => void;
 };
 
 const FeedbackContext = createContext<FeedbackContextValue | null>(null);
@@ -18,76 +32,97 @@ export function useFeedback() {
 }
 
 export function FeedbackProvider({ children }: { children: ReactNode }) {
-  const [editing, setEditing] = useState<EnrichedSession | undefined>();
-  const [formMode, setFormMode] = useState<FormMode>("closed");
+  const [active, setActive] = useState<ActiveForm>({ kind: "closed" });
 
   useEffect(() => {
     if (window.location.hash === "#contact") {
-      setFormMode("contact");
-      setEditing(undefined);
+      setActive({ kind: "contact" });
     }
   }, []);
 
-  function openForm(mode: "add" | "edit" | "contact", session?: EnrichedSession) {
-    setFormMode(mode);
-    setEditing(session);
-    if (mode === "contact") {
-      window.history.replaceState(
-        null,
-        "",
-        `${window.location.pathname}${window.location.search}#contact`,
-      );
-    }
+  function scrollToFeedback() {
     requestAnimationFrame(() => {
       document.getElementById("feedback")?.scrollIntoView({ behavior: "smooth" });
     });
   }
 
+  function openSessionForm(mode: "add" | "edit", session?: EnrichedSession) {
+    setActive({ kind: "session", mode, session });
+    scrollToFeedback();
+  }
+
+  function openCourtForm(mode: "add" | "edit", court?: BookableCourt) {
+    setActive({ kind: "court", mode, court });
+    scrollToFeedback();
+  }
+
+  function openStringerForm(mode: "add" | "edit", stringer?: Stringer) {
+    setActive({ kind: "stringer", mode, stringer });
+    scrollToFeedback();
+  }
+
+  function openContact() {
+    setActive({ kind: "contact" });
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}${window.location.search}#contact`,
+    );
+    scrollToFeedback();
+  }
+
+  function openForm(mode: "add" | "edit" | "contact", session?: EnrichedSession) {
+    if (mode === "contact") openContact();
+    else openSessionForm(mode, session);
+  }
+
+  function closeForm() {
+    setActive({ kind: "closed" });
+  }
+
   return (
-    <FeedbackContext.Provider value={{ openForm }}>
+    <FeedbackContext.Provider
+      value={{
+        openForm,
+        openSessionForm,
+        openCourtForm,
+        openStringerForm,
+        openContact,
+      }}
+    >
       {children}
-      <FeedbackPanel
-        formMode={formMode}
-        editing={editing}
-        onClose={() => {
-          setFormMode("closed");
-          setEditing(undefined);
-        }}
-        onOpen={openForm}
-      />
+      <FeedbackPanel active={active} onClose={closeForm} />
     </FeedbackContext.Provider>
   );
 }
 
-function FeedbackPanel({
-  formMode,
-  editing,
-  onClose,
-  onOpen,
-}: {
-  formMode: FormMode;
-  editing: EnrichedSession | undefined;
-  onClose: () => void;
-  onOpen: (mode: "add" | "edit" | "contact", session?: EnrichedSession) => void;
-}) {
+function FeedbackPanel({ active, onClose }: { active: ActiveForm; onClose: () => void }) {
+  const { openSessionForm, openCourtForm, openStringerForm, openContact } = useFeedback();
+
   return (
     <section id="feedback" className="feedback">
-      {formMode === "closed" ? (
+      {active.kind === "closed" ? (
         <div className="feedback__prompt">
           <div className="feedback__actions">
-            <button type="button" className="btn btn--accent btn--lg" onClick={() => onOpen("add")}>
+            <button type="button" className="btn btn--accent btn--lg" onClick={() => openSessionForm("add")}>
               Add a club
             </button>
-            <button type="button" className="btn btn--ghost btn--lg" onClick={() => onOpen("contact")}>
+            <button type="button" className="btn btn--accent btn--lg" onClick={() => openCourtForm("add")}>
+              Add a court
+            </button>
+            <button type="button" className="btn btn--accent btn--lg" onClick={() => openStringerForm("add")}>
+              Add a stringer
+            </button>
+            <button type="button" className="btn btn--ghost btn--lg" onClick={() => openContact()}>
               Contact / suggest
             </button>
           </div>
           <p>
-            To correct a session, use Suggest an edit on that listing. For courts, stringers, or
-            general ideas, use Contact / suggest and say what to add or change.
+            To fix a listing, use <strong>Suggest an edit</strong> on that card (sessions, courts, or
+            stringers). The form opens with its details filled in.
           </p>
         </div>
-      ) : formMode === "contact" ? (
+      ) : active.kind === "contact" ? (
         <ContactForm
           onCancel={() => {
             onClose();
@@ -100,11 +135,25 @@ function FeedbackPanel({
             }
           }}
         />
-      ) : (
+      ) : active.kind === "session" ? (
         <SuggestChangeForm
-          key={formMode === "edit" ? editing?.id : "new"}
-          mode={formMode}
-          session={formMode === "edit" ? editing : undefined}
+          key={active.mode === "edit" ? active.session?.id : "new-session"}
+          mode={active.mode}
+          session={active.mode === "edit" ? active.session : undefined}
+          onCancel={onClose}
+        />
+      ) : active.kind === "court" ? (
+        <SuggestCourtForm
+          key={active.mode === "edit" ? active.court?.id : "new-court"}
+          mode={active.mode}
+          court={active.mode === "edit" ? active.court : undefined}
+          onCancel={onClose}
+        />
+      ) : (
+        <SuggestStringerForm
+          key={active.mode === "edit" ? active.stringer?.id : "new-stringer"}
+          mode={active.mode}
+          stringer={active.mode === "edit" ? active.stringer : undefined}
           onCancel={onClose}
         />
       )}

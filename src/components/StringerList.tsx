@@ -5,8 +5,15 @@ import { buildDirectorySearch, readDirectoryFilters } from "../utils/hubView";
 import { filterStringers, type DirectoryFilters } from "../utils/directoryFilters";
 import { mapsUrl } from "../utils/sessionLinks";
 import { trackVirtualPageView } from "../analytics";
+import { useFeedback } from "./FeedbackSection";
 
-function StringerCard({ stringer }: { stringer: Stringer }) {
+function StringerCard({
+  stringer,
+  onSuggest,
+}: {
+  stringer: Stringer;
+  onSuggest: (stringer: Stringer) => void;
+}) {
   const mapLink =
     stringer.address &&
     mapsUrl({ venue: stringer.name, address: stringer.address, link: undefined });
@@ -67,11 +74,15 @@ function StringerCard({ stringer }: { stringer: Stringer }) {
         </p>
       )}
       <p className="session-card__meta-note">Verified {stringer.lastVerified}</p>
+      <button type="button" className="btn btn--ghost btn--sm" onClick={() => onSuggest(stringer)}>
+        Suggest an edit
+      </button>
     </article>
   );
 }
 
 export default function StringerList() {
+  const { openStringerForm } = useFeedback();
   const [filters, setFilters] = useState<DirectoryFilters>(() => {
     const { area, query } = readDirectoryFilters(window.location.search);
     const areaOk = AREA_ORDER.includes(area as (typeof AREA_ORDER)[number])
@@ -144,8 +155,18 @@ export default function StringerList() {
       </section>
 
       <p className="results-count">
-        {filtered.length} stringer{filtered.length === 1 ? "" : "s"} · Confirm prices and turnaround
-        before you send a racket.
+        {filtered.length} stringer{filtered.length === 1 ? "" : "s"} ·{" "}
+        <a
+          href="#feedback"
+          onClick={(event) => {
+            event.preventDefault();
+            openStringerForm("add");
+          }}
+        >
+          Add a stringer
+        </a>
+        {" · "}
+        Confirm prices and turnaround before you send a racket.
       </p>
 
       {grouped.length === 0 ? (
@@ -156,7 +177,11 @@ export default function StringerList() {
             <h2>{label}</h2>
             <div className="session-grid">
               {items.map((stringer) => (
-                <StringerCard key={stringer.id} stringer={stringer} />
+                <StringerCard
+                  key={stringer.id}
+                  stringer={stringer}
+                  onSuggest={(s) => openStringerForm("edit", s)}
+                />
               ))}
             </div>
           </section>
