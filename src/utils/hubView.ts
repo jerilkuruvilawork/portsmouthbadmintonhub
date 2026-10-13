@@ -1,14 +1,15 @@
-export type HubView = "sessions" | "courts" | "stringers";
+export type HubView = "sessions" | "coaches" | "courts" | "stringers";
 
 export const HUB_VIEW_LABELS: Record<HubView, string> = {
   sessions: "Sessions",
+  coaches: "Find a coach",
   courts: "Book a court",
   stringers: "Stringers",
 };
 
 export function readHubView(search: string): HubView {
   const view = new URLSearchParams(search).get("view");
-  if (view === "courts" || view === "stringers") return view;
+  if (view === "coaches" || view === "courts" || view === "stringers") return view;
   return "sessions";
 }
 
@@ -23,7 +24,7 @@ export function mergeHubViewIntoSearch(sessionSearch: string, view: HubView): st
 }
 
 export function buildDirectorySearch(
-  view: "courts" | "stringers",
+  view: Exclude<HubView, "sessions">,
   area: string,
   query: string,
 ): string {

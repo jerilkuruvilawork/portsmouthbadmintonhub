@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import type { BookableCourt } from "../data/courts";
 import type { EnrichedSession } from "../data/sessionDetails";
+import type { Coach } from "../data/coaches";
 import type { Stringer } from "../data/stringers";
 import ContactForm from "./ContactForm";
 import SuggestChangeForm from "./SuggestChangeForm";
+import SuggestCoachForm from "./SuggestCoachForm";
 import SuggestCourtForm from "./SuggestCourtForm";
 import SuggestStringerForm from "./SuggestStringerForm";
 
@@ -12,7 +14,8 @@ type ActiveForm =
   | { kind: "contact" }
   | { kind: "session"; mode: "add" | "edit"; session?: EnrichedSession }
   | { kind: "court"; mode: "add" | "edit"; court?: BookableCourt }
-  | { kind: "stringer"; mode: "add" | "edit"; stringer?: Stringer };
+  | { kind: "stringer"; mode: "add" | "edit"; stringer?: Stringer }
+  | { kind: "coach"; mode: "add" | "edit"; coach?: Coach };
 
 type FeedbackContextValue = {
   /** @deprecated use openSessionForm */
@@ -20,6 +23,7 @@ type FeedbackContextValue = {
   openSessionForm: (mode: "add" | "edit", session?: EnrichedSession) => void;
   openCourtForm: (mode: "add" | "edit", court?: BookableCourt) => void;
   openStringerForm: (mode: "add" | "edit", stringer?: Stringer) => void;
+  openCoachForm: (mode: "add" | "edit", coach?: Coach) => void;
   openContact: () => void;
 };
 
@@ -61,6 +65,11 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
     scrollToFeedback();
   }
 
+  function openCoachForm(mode: "add" | "edit", coach?: Coach) {
+    setActive({ kind: "coach", mode, coach });
+    scrollToFeedback();
+  }
+
   function openContact() {
     setActive({ kind: "contact" });
     window.history.replaceState(
@@ -87,6 +96,7 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
         openSessionForm,
         openCourtForm,
         openStringerForm,
+        openCoachForm,
         openContact,
       }}
     >
@@ -97,7 +107,8 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
 }
 
 function FeedbackPanel({ active, onClose }: { active: ActiveForm; onClose: () => void }) {
-  const { openSessionForm, openCourtForm, openStringerForm, openContact } = useFeedback();
+  const { openSessionForm, openCourtForm, openStringerForm, openCoachForm, openContact } =
+    useFeedback();
 
   return (
     <section id="feedback" className="feedback">
@@ -113,13 +124,16 @@ function FeedbackPanel({ active, onClose }: { active: ActiveForm; onClose: () =>
             <button type="button" className="btn btn--accent btn--lg" onClick={() => openStringerForm("add")}>
               Add a stringer
             </button>
+            <button type="button" className="btn btn--accent btn--lg" onClick={() => openCoachForm("add")}>
+              Add a coach
+            </button>
             <button type="button" className="btn btn--ghost btn--lg" onClick={() => openContact()}>
               Contact / suggest
             </button>
           </div>
           <p>
-            To fix a listing, use <strong>Suggest an edit</strong> on that card (sessions, courts, or
-            stringers). The form opens with its details filled in.
+            To fix a listing, use <strong>Suggest an edit</strong> on that card. The form opens with
+            its details filled in.
           </p>
         </div>
       ) : active.kind === "contact" ? (
@@ -149,11 +163,18 @@ function FeedbackPanel({ active, onClose }: { active: ActiveForm; onClose: () =>
           court={active.mode === "edit" ? active.court : undefined}
           onCancel={onClose}
         />
-      ) : (
+      ) : active.kind === "stringer" ? (
         <SuggestStringerForm
           key={active.mode === "edit" ? active.stringer?.id : "new-stringer"}
           mode={active.mode}
           stringer={active.mode === "edit" ? active.stringer : undefined}
+          onCancel={onClose}
+        />
+      ) : (
+        <SuggestCoachForm
+          key={active.mode === "edit" ? active.coach?.id : "new-coach"}
+          mode={active.mode}
+          coach={active.mode === "edit" ? active.coach : undefined}
           onCancel={onClose}
         />
       )}

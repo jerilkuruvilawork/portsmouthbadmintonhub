@@ -68,7 +68,7 @@ export async function submitCorrection(
   return sendMaintainerEmail(subject, body, payload.reporterEmail);
 }
 
-export type DirectoryEntity = "court" | "stringer";
+export type DirectoryEntity = "court" | "stringer" | "coach";
 
 export type DirectoryCorrectionPayload = {
   mode: "add" | "edit";
@@ -82,7 +82,8 @@ export type DirectoryCorrectionPayload = {
 export async function submitDirectoryCorrection(
   payload: DirectoryCorrectionPayload,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  const noun = payload.entity === "court" ? "court" : "stringer";
+  const noun =
+    payload.entity === "court" ? "court" : payload.entity === "coach" ? "coach" : "stringer";
   const action = payload.mode === "edit" ? `Edit ${noun}` : `Add ${noun}`;
   const subject = `Portsmouth Badminton Hub: ${action} — ${payload.listingName || "unnamed"}`;
 

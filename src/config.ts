@@ -4,7 +4,7 @@ export const SITE_BASE =
 
 export const SITE_NAME = "Portsmouth Badminton Hub";
 export const SITE_TAGLINE =
-  "Sessions, court hire & stringers within ~25 miles of Portsmouth";
+  "Sessions, coaches, court hire & stringers within ~25 miles of Portsmouth";
 
 /**
  * Inbox for correction forms. Used only server-side by FormSubmit — never shown in the UI.

@@ -1,5 +1,6 @@
 import type { Area } from "../data/sessionDetails";
 import type { BookableCourt } from "../data/courts";
+import type { Coach } from "../data/coaches";
 import type { Stringer } from "../data/stringers";
 
 export type DirectoryFilters = {
@@ -20,6 +21,29 @@ export function filterCourts(courts: BookableCourt[], filters: DirectoryFilters)
       court.priceNote,
       court.notes,
       court.availabilityNote,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return blob.includes(q);
+  });
+}
+
+export function filterCoaches(coaches: Coach[], filters: DirectoryFilters): Coach[] {
+  const q = filters.query.trim().toLowerCase();
+  return coaches.filter((coach) => {
+    if (filters.area !== "all" && coach.area !== filters.area) return false;
+    if (!q) return true;
+    const blob = [
+      coach.name,
+      coach.contact,
+      coach.area,
+      coach.address,
+      coach.areasServedNote,
+      coach.levelsNote,
+      coach.audienceNote,
+      coach.venueNote,
+      coach.notes,
     ]
       .filter(Boolean)
       .join(" ")

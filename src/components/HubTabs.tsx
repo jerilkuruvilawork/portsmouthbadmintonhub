@@ -6,7 +6,7 @@ type Props = {
 };
 
 export default function HubTabs({ view, onChange }: Props) {
-  const tabs: HubView[] = ["sessions", "courts", "stringers"];
+  const tabs: HubView[] = ["sessions", "coaches", "courts", "stringers"];
 
   return (
     <nav className="hub-tabs" aria-label="Directory sections">

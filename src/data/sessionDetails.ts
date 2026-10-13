@@ -338,6 +338,7 @@ const detailsById: Record<string, SessionDetails> = {
     playerLevels: ["intermediate", "advanced", "league"],
     kinds: ["club"],
     formats: ["doubles"],
+    excludesBeginners: true,
   },
   "southampton-rec-sat": {
     area: "Southampton",

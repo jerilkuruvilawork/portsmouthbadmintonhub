@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import CoachList from "./components/CoachList";
 import CourtList from "./components/CourtList";
 import { FeedbackProvider } from "./components/FeedbackSection";
 import HubTabs from "./components/HubTabs";
@@ -48,12 +49,13 @@ export default function App() {
         <h1>{SITE_NAME}</h1>
         <p className="hero__tagline">{SITE_TAGLINE}</p>
         <p className="hero__note">
-          Use the tabs for <strong>sessions</strong>, <strong>bookable courts</strong>, or{" "}
-          <strong>stringers</strong>. Filter by area and share the URL. Shuttle type, prices, and
-          court slots change — confirm with the venue or stringer before you travel.
+          Use the tabs for <strong>sessions</strong>, <strong>coaches</strong>,{" "}
+          <strong>bookable courts</strong>, or <strong>stringers</strong>. Filter by area and share
+          the URL. Shuttle type, prices, and court slots change — confirm with the venue or coach
+          before you travel.
         </p>
         <p className="hero__contact">
-          Wrong info? Use Suggest an edit on the card. To add a club, court, or stringer, use the
+          Wrong info? Use Suggest an edit on the card. To add a club, coach, court, or stringer, use the
           buttons at the bottom or{" "}
           <a href="#feedback">the forms at the bottom</a> or{" "}
           <a href="#contact">contact / suggest</a>.
@@ -64,6 +66,7 @@ export default function App() {
         <main>
           <HubTabs view={view} onChange={changeView} />
           {view === "sessions" && <SessionList />}
+          {view === "coaches" && <CoachList />}
           {view === "courts" && <CourtList />}
           {view === "stringers" && <StringerList />}
         </main>
