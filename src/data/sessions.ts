@@ -188,6 +188,7 @@ export const badmintonSessions: BadmintonSession[] = [
     venue: "Portchester Community School",
     address: "PO16 9BD",
     level: "Not for beginners or children",
+    price: "£7",
     shuttle: "plastic",
     shuttleNote: "Plastic shuttles (community report).",
     notes: "Just turn up and pay. 40+ years running.",
