@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting to Portsmouth Badminton Hub</title>
+    <script>
+      (function () {
+        var base = "https://portsmouthbadminton.co.uk/";
+        if (!base.endsWith("/")) base += "/";
+        var rest = location.pathname.replace(/^\/portsmouthbadmintonhub\/?/, "");
+        var path = rest && rest !== "/" ? rest.replace(/^\//, "") : "";
+        var target = path ? base + path : base;
+        location.replace(target + location.search + location.hash);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>
+      <a href="https://portsmouthbadminton.co.uk/">Portsmouth Badminton Hub</a>
+    </p>
+  </body>
+</html>

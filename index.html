@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting to Portsmouth Badminton Hub</title>
+    <!-- Change this URL if your live site moves (Vercel preview or custom domain). -->
+    <meta http-equiv="refresh" content="0;url=https://portsmouthbadminton.co.uk/" />
+    <script>
+      (function () {
+        var base = "https://portsmouthbadminton.co.uk/";
+        if (!base.endsWith("/")) base += "/";
+        var rest = location.pathname.replace(/^\/portsmouthbadmintonhub\/?/, "");
+        var path = rest && rest !== "/" ? rest.replace(/^\//, "") : "";
+        var target = path ? base + path : base;
+        location.replace(target + location.search + location.hash);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>
+      Portsmouth Badminton Hub has moved —
+      <a href="https://portsmouthbadminton.co.uk/">open the new site</a>.
+    </p>
+  </body>
+</html>
